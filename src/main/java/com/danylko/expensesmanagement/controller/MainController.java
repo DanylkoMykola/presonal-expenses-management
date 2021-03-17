@@ -4,20 +4,24 @@ import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.entity.TotalExpenses;
 import com.danylko.expensesmanagement.service.CurrencyConverterService;
 import com.danylko.expensesmanagement.service.PersonExpenseService;
-import com.posadskiy.currencyconverter.enums.Currency;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Map;
+
 
 @RestController
 public class MainController {
 
+    Logger log = LoggerFactory.getLogger(MainController.class);
     private final PersonExpenseService expenseService;
     private final CurrencyConverterService converterService;
 
-    public MainController(PersonExpenseService expenseService, CurrencyConverterService converterService) {
+    public MainController(@Qualifier("PersonExpenses") PersonExpenseService expenseService,
+                          @Qualifier("FreeCurrencyConverter") CurrencyConverterService converterService) {
         this.expenseService = expenseService;
         this.converterService = converterService;
     }
@@ -32,14 +36,16 @@ public class MainController {
         return expenseService.findAll();
     }
 
-    @DeleteMapping("/expenses/{date}")
-    public void delete(@PathVariable LocalDate date) {
+    @DeleteMapping("/expenses")
+    public void delete(@RequestParam LocalDate date) {
         expenseService.deleteByDate(date);
     }
 
-    @GetMapping("/total/{base}")
-    public TotalExpenses getTotalExpenses(@PathVariable String base) {
+    @GetMapping("/total")
+    public TotalExpenses getTotalExpenses(@RequestParam String base) {
+        log.info(base + "!!!!!!!!!!");
         TotalExpenses totalExpenses = new TotalExpenses(base);
+        log.info(totalExpenses.getTotal() + "!!!!!!!!!");
         List<PersonExpense> expenses = expenseService.findAll();
         for (PersonExpense expense : expenses) {
             if (!expense.getCurrency().equals(base)) {
@@ -50,5 +56,7 @@ public class MainController {
                 totalExpenses.addTotal(expense.getAmount());
             }
         }
+        log.info(totalExpenses.getTotal() + "!!!!!!!!!");
+        return totalExpenses;
     }
 }

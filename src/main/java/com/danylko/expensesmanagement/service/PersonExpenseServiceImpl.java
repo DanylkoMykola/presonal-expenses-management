@@ -2,11 +2,15 @@ package com.danylko.expensesmanagement.service;
 
 import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.repo.PersonExpenseRepository;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Service
+@Qualifier("PersonExpenses")
 public class PersonExpenseServiceImpl implements PersonExpenseService {
 
     private final PersonExpenseRepository repository;

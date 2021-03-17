@@ -1,7 +1,10 @@
 package com.danylko.expensesmanagement.entity;
 
 import javax.persistence.*;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.time.LocalDate;
+import java.util.Locale;
 
 @Entity
 @Table(name = "expenses")
@@ -51,11 +54,13 @@ public class PersonExpense {
     }
 
     public Double getAmount() {
-        return amount;
+        DecimalFormat df = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+        return new Double(df.format(amount));
     }
 
     public void setAmount(Double amount) {
-        this.amount = amount;
+        DecimalFormat df = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.ENGLISH));
+        this.amount = new Double(df.format(amount));
     }
 
     public String getCurrency() {
