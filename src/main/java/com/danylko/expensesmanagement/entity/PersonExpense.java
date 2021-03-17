@@ -1,7 +1,5 @@
 package com.danylko.expensesmanagement.entity;
 
-import com.danylko.expensesmanagement.enums.Currency;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 
@@ -20,7 +18,7 @@ public class PersonExpense {
     private Double amount;
 
     @Column
-    private Currency currency;
+    private String currency;
 
     @Column
     private String product;
@@ -31,7 +29,7 @@ public class PersonExpense {
     public PersonExpense(Long id,
                          LocalDate date,
                          Double amount,
-                         Currency currency,
+                         String currency,
                          String product) {
         this.id = id;
         this.date = date;
@@ -60,11 +58,11 @@ public class PersonExpense {
         this.amount = amount;
     }
 
-    public Currency getCurrency() {
+    public String getCurrency() {
         return currency;
     }
 
-    public void setCurrency(Currency currency) {
+    public void setCurrency(String currency) {
         this.currency = currency;
     }
 

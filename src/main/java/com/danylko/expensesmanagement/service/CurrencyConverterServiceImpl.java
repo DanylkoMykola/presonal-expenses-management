@@ -22,4 +22,9 @@ public class CurrencyConverterServiceImpl implements CurrencyConverterService {
     public Double convert(Currency form, Currency to) {
         return converter.rate(form, to);
     }
+    @Override
+    public Double convert(String form, String to) {
+        return converter.rate(form, to);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.danylko.expensesmanagement.service;
 import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.repo.PersonExpenseRepository;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,7 +29,7 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
     }
 
     @Override
-    public void delete(PersonExpense personExpense) {
-        repository.delete(personExpense);
+    public void deleteByDate(LocalDate date) {
+        repository.deleteByDate(date);
     }
 }
