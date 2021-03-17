@@ -21,8 +21,12 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
     }
 
     @Override
-    public void save(PersonExpense personExpense) {
+    public boolean save(PersonExpense personExpense) {
+        if (personExpense == null) {
+            return false;
+        }
         repository.save(personExpense);
+        return true;
     }
 
     @Override
@@ -35,7 +39,11 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
 
     @Transactional
     @Override
-    public void deleteByDate(LocalDate date) {
-        repository.removeByDate(date);
+    public boolean deleteByDate(LocalDate date) {
+        if (date == null) {
+            return false;
+        }
+        repository.deleteByDate(date);
+        return true;
     }
 }
