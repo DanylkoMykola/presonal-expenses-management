@@ -4,6 +4,7 @@ import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.repo.PersonExpenseRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -32,8 +33,9 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
         return expenses;
     }
 
+    @Transactional
     @Override
     public void deleteByDate(LocalDate date) {
-        repository.deleteByDate(date);
+        repository.removeByDate(date);
     }
 }

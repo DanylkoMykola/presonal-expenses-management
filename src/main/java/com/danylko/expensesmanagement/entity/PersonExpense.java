@@ -1,5 +1,7 @@
 package com.danylko.expensesmanagement.entity;
 
+import com.posadskiy.currencyconverter.enums.Currency;
+
 import javax.persistence.*;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -21,7 +23,7 @@ public class PersonExpense {
     private Double amount;
 
     @Column
-    private String currency;
+    private Currency currency;
 
     @Column
     private String product;
@@ -32,7 +34,7 @@ public class PersonExpense {
     public PersonExpense(Long id,
                          LocalDate date,
                          Double amount,
-                         String currency,
+                         Currency currency,
                          String product) {
         this.id = id;
         this.date = date;
@@ -63,11 +65,11 @@ public class PersonExpense {
         this.amount = new Double(df.format(amount));
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 

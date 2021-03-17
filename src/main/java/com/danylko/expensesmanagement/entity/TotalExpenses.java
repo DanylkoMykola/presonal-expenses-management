@@ -1,5 +1,7 @@
 package com.danylko.expensesmanagement.entity;
 
+import com.posadskiy.currencyconverter.enums.Currency;
+
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.util.Locale;
@@ -7,9 +9,9 @@ import java.util.Locale;
 public class TotalExpenses {
 
     private Double total;
-    private String currency;
+    private Currency currency;
 
-    public TotalExpenses(String currency) {
+    public TotalExpenses(Currency currency) {
         this.total = 0.0;
         this.currency = currency;
     }
@@ -24,11 +26,11 @@ public class TotalExpenses {
         this.total = new Double(df.format(total));
     }
 
-    public String getCurrency() {
+    public Currency getCurrency() {
         return currency;
     }
 
-    public void setCurrency(String currency) {
+    public void setCurrency(Currency currency) {
         this.currency = currency;
     }
 
