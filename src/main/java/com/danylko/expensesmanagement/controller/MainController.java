@@ -31,7 +31,7 @@ public class MainController {
     @PostMapping("/expenses")
     @ResponseStatus(HttpStatus.CREATED)
     public void create(@RequestBody PersonExpense personExpense) {
-        expenseService.save(personExpense);
+        expenseService.create(personExpense);
     }
 
     @GetMapping("/expenses")

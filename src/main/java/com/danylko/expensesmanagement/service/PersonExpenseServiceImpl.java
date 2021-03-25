@@ -21,7 +21,7 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
     }
 
     @Override
-    public boolean save(PersonExpense personExpense) {
+    public boolean create(PersonExpense personExpense) {
         if (personExpense == null) {
             return false;
         }

@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public interface PersonExpenseService {
 
-    boolean save(PersonExpense personExpense);
+    boolean create(PersonExpense personExpense);
     List<PersonExpense> findAll();
     boolean deleteByDate(LocalDate date);
 }

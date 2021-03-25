@@ -4,7 +4,6 @@ import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.entity.TotalExpenses;
 import com.danylko.expensesmanagement.service.CurrencyConverterService;
 import com.danylko.expensesmanagement.service.PersonExpenseService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.posadskiy.currencyconverter.enums.Currency;
 import org.junit.jupiter.api.BeforeEach;
@@ -15,30 +14,15 @@ import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultMatcher;
-
-/*
-import org.zalando.problem.ProblemModule;
-import org.zalando.problem.violations.ConstraintViolationProblemModule;
-import id.test.springboottesting.model.User;
-import id.test.springboottesting.service.UserService;
-*/
 
 import java.util.*;
 
-import static org.hamcrest.Matchers.hasSize;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.doNothing;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.hamcrest.CoreMatchers.is;
 import java.time.LocalDate;
-
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @WebMvcTest(controllers = MainController.class)
@@ -70,7 +54,7 @@ class MainControllerTest {
     @Test
     void shouldCreateNewPersonExpense() throws Exception {
         PersonExpense personExpense = new PersonExpense(4L, LocalDate.parse("2021-04-27"), 25.5, Currency.UAH,  "Sweets");
-        given(expenseService.save(personExpense)).willReturn(true);
+        given(expenseService.create(personExpense)).willReturn(true);
         this.mockMvc.perform(post("/expenses")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(personExpense)))
