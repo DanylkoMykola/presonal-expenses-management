@@ -13,6 +13,6 @@ public interface PersonExpenseService {
     boolean create(PersonExpense personExpense);
     List<PersonExpense> getAll();
     Map<LocalDate, List<PersonExpense>> getSortedByDate();
-    List<PersonExpense> deleteByDate(LocalDate date);
+    List<PersonExpense> deleteByDate(String date);
 
 }

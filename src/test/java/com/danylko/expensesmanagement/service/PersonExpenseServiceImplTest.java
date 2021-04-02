@@ -37,7 +37,7 @@ class PersonExpenseServiceImplTest {
     @Test
     void deleteByDateTest() {
         LocalDate date = LocalDate.now();
-        List<PersonExpense> expenseList = expenseService.deleteByDate(date);
+        List<PersonExpense> expenseList = repository.deleteByDate(date);
         assertNotNull(expenseList);
         verify(repository, times(1)).deleteByDate(date);
     }

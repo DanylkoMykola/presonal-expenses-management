@@ -72,7 +72,7 @@ class MainControllerTest {
 
     @Test
     void deleteNotExistPersonsExpenses() throws Exception {
-        LocalDate date = LocalDate.parse("2021-04-10");
+        String date = "2021-04-10";
         given(expenseService.deleteByDate(date)).willReturn(new ArrayList<>());
         this.mockMvc.perform(delete("/expenses")
                 .param("date", date.toString()))

@@ -41,7 +41,7 @@ public class MainController {
 
     @DeleteMapping("/expenses")
     public List<PersonExpense> delete(@RequestParam String date) {
-        return expenseService.deleteByDate(LocalDate.parse(date));
+        return expenseService.deleteByDate(date);
     }
 
     @GetMapping("/total")

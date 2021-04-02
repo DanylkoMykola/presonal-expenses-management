@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.*;
 
 @Service
@@ -55,10 +57,14 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
 
     @Transactional
     @Override
-    public List<PersonExpense> deleteByDate(LocalDate date) {
-        if (date == null) {
+    public List<PersonExpense> deleteByDate(String date) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        try {
+            LocalDate localDate = LocalDate.parse(date, dateFormatter);
+            return repository.deleteByDate(localDate);
+        } catch (DateTimeParseException e) {
             return new ArrayList<>();
         }
-        return repository.deleteByDate(date);
+
     }
 }
