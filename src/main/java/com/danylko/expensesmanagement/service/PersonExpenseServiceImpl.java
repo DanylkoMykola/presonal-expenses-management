@@ -2,13 +2,14 @@ package com.danylko.expensesmanagement.service;
 
 import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.repo.PersonExpenseRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Qualifier("PersonExpenses")
@@ -28,22 +29,36 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
         repository.save(personExpense);
         return true;
     }
-
     @Override
-    public List<PersonExpense> findAll() {
+    public List<PersonExpense> getAll() {
         List<PersonExpense> expenses = new ArrayList<>();
         Iterable<PersonExpense> iterable = repository.findAll();
         iterable.forEach(expenses::add);
         return expenses;
     }
 
+    @Override
+    public Map<LocalDate, List<PersonExpense>> getSortedByDate() {
+        Map<LocalDate, List<PersonExpense>> expenseMap = new TreeMap<>();
+        Iterable<PersonExpense> iterable = repository.findAll();
+
+        for (PersonExpense personExpense : iterable) {
+            LocalDate date = personExpense.getDate();
+            expenseMap.computeIfPresent(date, (key, val) -> {
+                val.add(personExpense);
+                return val;
+            });
+            expenseMap.putIfAbsent(date,  new ArrayList<>(Arrays.asList(personExpense)));
+        }
+        return expenseMap;
+    }
+
     @Transactional
     @Override
-    public boolean deleteByDate(LocalDate date) {
+    public List<PersonExpense> deleteByDate(LocalDate date) {
         if (date == null) {
-            return false;
+            return new ArrayList<>();
         }
-        repository.deleteByDate(date);
-        return true;
+        return repository.deleteByDate(date);
     }
 }

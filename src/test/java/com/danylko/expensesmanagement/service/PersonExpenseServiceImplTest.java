@@ -13,6 +13,7 @@ import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -36,8 +37,8 @@ class PersonExpenseServiceImplTest {
     @Test
     void deleteByDateTest() {
         LocalDate date = LocalDate.now();
-        boolean isDeleted = expenseService.deleteByDate(date);
-        assertTrue(isDeleted);
+        List<PersonExpense> expenseList = expenseService.deleteByDate(date);
+        assertNotNull(expenseList);
         verify(repository, times(1)).deleteByDate(date);
     }
 }

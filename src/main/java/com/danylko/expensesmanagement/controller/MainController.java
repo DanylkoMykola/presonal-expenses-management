@@ -2,9 +2,8 @@ package com.danylko.expensesmanagement.controller;
 
 import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.entity.TotalExpenses;
-import com.danylko.expensesmanagement.service.CurrencyConverterService;
 import com.danylko.expensesmanagement.service.PersonExpenseService;
-import com.posadskiy.currencyconverter.enums.Currency;
+import com.danylko.expensesmanagement.service.TotalExpensesService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 
 @RestController
@@ -20,12 +20,12 @@ public class MainController {
 
     Logger log = LoggerFactory.getLogger(MainController.class);
     private final PersonExpenseService expenseService;
-    private final CurrencyConverterService converterService;
+    private final TotalExpensesService totalExpensesService;
 
     public MainController(@Qualifier("PersonExpenses") PersonExpenseService expenseService,
-                          @Qualifier("FreeCurrencyConverter") CurrencyConverterService converterService) {
+                          @Qualifier("TotalExpenses") TotalExpensesService totalExpensesService) {
         this.expenseService = expenseService;
-        this.converterService = converterService;
+        this.totalExpensesService = totalExpensesService;
     }
 
     @PostMapping("/expenses")
@@ -35,29 +35,18 @@ public class MainController {
     }
 
     @GetMapping("/expenses")
-    public List<PersonExpense> findAll() {
-        return expenseService.findAll();
+    public Map<LocalDate, List<PersonExpense>> findAll() {
+        return expenseService.getSortedByDate();
     }
 
     @DeleteMapping("/expenses")
-    public void delete(@RequestParam String date) {
-        expenseService.deleteByDate(LocalDate.parse(date));
+    public List<PersonExpense> delete(@RequestParam String date) {
+        return expenseService.deleteByDate(LocalDate.parse(date));
     }
 
     @GetMapping("/total")
     public TotalExpenses getTotalExpenses(@RequestParam String base) {
-        Currency currencyBase = Currency.valueOf(base);
-        TotalExpenses totalExpenses = new TotalExpenses(currencyBase);
-        List<PersonExpense> expenses = expenseService.findAll();
-        for (PersonExpense expense : expenses) {
-            if (expense.getCurrency() != currencyBase) {
-                Double currency = converterService.convert(expense.getCurrency(), currencyBase);
-                totalExpenses.addTotal(expense.getAmount() * currency);
-            }
-            else {
-                totalExpenses.addTotal(expense.getAmount());
-            }
-        }
-        return totalExpenses;
+        List<PersonExpense> expenses = expenseService.getAll();
+        return totalExpensesService.getTotalExpenses(expenses, base);
     }
 }

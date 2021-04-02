@@ -63,7 +63,7 @@ class MainControllerTest {
 
     @Test
     void shouldReturnAllPersonExpenses() throws Exception {
-        given(expenseService.findAll()).willReturn(expenses);
+        given(expenseService.getAll()).willReturn(expenses);
 
         this.mockMvc.perform(get("/expenses"))
                 .andExpect(status().isOk())
@@ -73,7 +73,7 @@ class MainControllerTest {
     @Test
     void deleteNotExistPersonsExpenses() throws Exception {
         LocalDate date = LocalDate.parse("2021-04-10");
-        given(expenseService.deleteByDate(date)).willReturn(false);
+        given(expenseService.deleteByDate(date)).willReturn(new ArrayList<>());
         this.mockMvc.perform(delete("/expenses")
                 .param("date", date.toString()))
                 .andExpect(status().isOk());
