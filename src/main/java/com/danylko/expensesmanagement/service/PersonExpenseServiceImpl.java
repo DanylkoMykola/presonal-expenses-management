@@ -32,7 +32,7 @@ public class PersonExpenseServiceImpl implements PersonExpenseService {
         return true;
     }
     @Override
-    public List<PersonExpense> getAll() {
+    public List<PersonExpense> findAll() {
         List<PersonExpense> expenses = new ArrayList<>();
         Iterable<PersonExpense> iterable = repository.findAll();
         iterable.forEach(expenses::add);

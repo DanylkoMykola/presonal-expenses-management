@@ -46,7 +46,7 @@ public class MainController {
 
     @GetMapping("/total")
     public TotalExpenses getTotalExpenses(@RequestParam String base) {
-        List<PersonExpense> expenses = expenseService.getAll();
+        List<PersonExpense> expenses = expenseService.findAll();
         return totalExpensesService.getTotalExpenses(expenses, base);
     }
 }

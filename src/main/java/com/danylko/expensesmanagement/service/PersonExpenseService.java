@@ -11,7 +11,7 @@ import java.util.Map;
 public interface PersonExpenseService {
 
     boolean create(PersonExpense personExpense);
-    List<PersonExpense> getAll();
+    List<PersonExpense> findAll();
     Map<LocalDate, List<PersonExpense>> getSortedByDate();
     List<PersonExpense> deleteByDate(String date);
 

@@ -2,8 +2,8 @@ package com.danylko.expensesmanagement.controller;
 
 import com.danylko.expensesmanagement.entity.PersonExpense;
 import com.danylko.expensesmanagement.entity.TotalExpenses;
-import com.danylko.expensesmanagement.service.CurrencyConverterService;
 import com.danylko.expensesmanagement.service.PersonExpenseService;
+import com.danylko.expensesmanagement.service.TotalExpensesService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.posadskiy.currencyconverter.enums.Currency;
 import org.junit.jupiter.api.BeforeEach;
@@ -39,9 +39,10 @@ class MainControllerTest {
     @Qualifier("PersonExpenses")
     private PersonExpenseService expenseService;
 
+
     @MockBean
-    @Qualifier("FreeCurrencyConverter")
-    private CurrencyConverterService converterService;
+    @Qualifier("TotalExpenses")
+    private TotalExpensesService totalExpensesService;
 
     private List<PersonExpense> expenses = new ArrayList<>();
 
@@ -61,31 +62,14 @@ class MainControllerTest {
                 .andExpect(status().isCreated());
     }
 
-    @Test
-    void shouldReturnAllPersonExpenses() throws Exception {
-        given(expenseService.getAll()).willReturn(expenses);
-
-        this.mockMvc.perform(get("/expenses"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.size()", is(expenses.size())));
-    }
 
     @Test
     void deleteNotExistPersonsExpenses() throws Exception {
         String date = "2021-04-10";
         given(expenseService.deleteByDate(date)).willReturn(new ArrayList<>());
         this.mockMvc.perform(delete("/expenses")
-                .param("date", date.toString()))
+                .param("date", date))
                 .andExpect(status().isOk());
     }
 
-    @Test
-    void getTotalExpenses() throws Exception {
-        TotalExpenses total = new TotalExpenses(Currency.UAH);
-        mockMvc.perform(get("/total")
-                .param("base", String.valueOf(Currency.UAH)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.total", is(total.getTotal())))
-                .andExpect(jsonPath("$.currency", is(String.valueOf(total.getCurrency()))));
-    }
 }
